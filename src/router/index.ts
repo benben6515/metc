@@ -14,9 +14,15 @@ const routes: RouteRecordRaw[] = [
     meta: { requiresAuth: false },
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: () => import('@/pages/RegisterPage.vue'),
+    meta: { requiresAuth: false },
+  },
+  {
     path: '/',
     name: 'Home',
-    redirect: '/accounts',
+    redirect: '/register',
   },
   {
     path: '/accounts',
@@ -39,7 +45,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    redirect: '/accounts',
+    redirect: '/register',
   },
 ];
 
@@ -62,8 +68,8 @@ router.beforeEach((to, from, next) => {
 
   if (requiresAuth && !authStore.isAuthenticated) {
     logger.warn('Unauthorized access attempt', { path: to.path });
-    next({ name: 'Login', query: { redirect: to.fullPath } });
-  } else if (to.name === 'Login' && authStore.isAuthenticated) {
+    next({ name: 'Register', query: { redirect: to.fullPath } });
+  } else if ((to.name === 'Login' || to.name === 'Register') && authStore.isAuthenticated) {
     // Redirect to home if already authenticated
     next({ name: 'Accounts' });
   } else {

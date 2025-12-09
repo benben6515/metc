@@ -1,12 +1,13 @@
 <template>
   <div class="accounts-page">
     <div class="page-header">
-      <h1 class="text-h4">Accounts Management</h1>
+      <h1 class="text-h4">帳號管理系統</h1>
+      <div class="subtitle">管理您的所有帳號</div>
       <q-btn
         color="primary"
         icon="add"
-        label="Create Account"
-        @click="handleCreate"
+        label="新增帳號"
+        @click="showRegisterDialog = true"
       />
     </div>
 
@@ -21,6 +22,11 @@
       :loading="accountsStore.isLoading"
       @edit="handleEdit"
       @delete="handleDelete"
+    />
+
+    <register-dialog
+      v-model="showRegisterDialog"
+      @success="handleRegisterSuccess"
     />
 
     <confirm-dialog
@@ -40,6 +46,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { QBtn } from 'quasar';
 import AccountsList from '@/components/accounts/AccountsList.vue';
+import RegisterDialog from '@/components/accounts/RegisterDialog.vue';
 import ErrorMessage from '@/components/common/ErrorMessage.vue';
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue';
 import { useAccountsStore } from '@/stores/accounts';
@@ -47,6 +54,7 @@ import { useAccountsStore } from '@/stores/accounts';
 const router = useRouter();
 const accountsStore = useAccountsStore();
 
+const showRegisterDialog = ref(false);
 const showDeleteDialog = ref(false);
 const accountToDelete = ref<string | null>(null);
 
@@ -54,8 +62,9 @@ onMounted(async () => {
   await accountsStore.fetchAccounts();
 });
 
-function handleCreate(): void {
-  router.push({ name: 'CreateAccount' });
+function handleRegisterSuccess(): void {
+  // Refresh the accounts list
+  accountsStore.fetchAccounts();
 }
 
 function handleEdit(accountId: string): void {
@@ -95,6 +104,19 @@ function cancelDelete(): void {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  position: relative;
+}
+
+.page-header .text-h4 {
+  margin: 0;
+}
+
+.page-header .subtitle {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  color: #666;
+  font-size: 0.9rem;
 }
 
 @media (max-width: 600px) {

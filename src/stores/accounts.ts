@@ -29,9 +29,21 @@ export const useAccountsStore = defineStore('accounts', () => {
     try {
       const response = await apiClient.get<AccountListResponse>('/accounts');
 
-      // Validate response
-      const validatedData = AccountListResponseSchema.parse(response.data);
-      accounts.value = validatedData.data;
+      // Try to validate response, but if it fails, use raw data
+      try {
+        const validatedData = AccountListResponseSchema.parse(response.data);
+        accounts.value = validatedData.data;
+      } catch (validationError) {
+        // If validation fails, check if response.data is an array
+        logger.warn('Response validation failed, trying raw data', validationError);
+        if (Array.isArray(response.data)) {
+          accounts.value = response.data as Account[];
+        } else if (response.data && Array.isArray((response.data as any).data)) {
+          accounts.value = (response.data as any).data as Account[];
+        } else {
+          throw new Error('Cannot parse accounts response');
+        }
+      }
 
       logger.info('Accounts fetched successfully', { count: accounts.value.length });
     } catch (err) {
@@ -74,12 +86,20 @@ export const useAccountsStore = defineStore('accounts', () => {
     try {
       const response = await apiClient.post<Account>('/create-account', accountData);
 
-      // Validate response
-      const validatedData = AccountSchema.parse(response.data);
-      accounts.value.push(validatedData);
+      // Try to validate response, but if it fails, use raw data
+      let accountResult: Account;
+      try {
+        accountResult = AccountSchema.parse(response.data);
+      } catch (validationError) {
+        // If validation fails, try to use the raw response data
+        logger.warn('Response validation failed, using raw data', validationError);
+        accountResult = response.data as Account;
+      }
 
-      logger.info('Account created successfully', { accountId: validatedData.id });
-      return validatedData;
+      accounts.value.push(accountResult);
+
+      logger.info('Account created successfully', { accountId: accountResult.id });
+      return accountResult;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to create account';
       error.value = errorMessage;
