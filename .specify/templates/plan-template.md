@@ -31,7 +31,20 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+Verify compliance with the METC constitution principles:
+
+- [ ] **Component-First**: Are features designed as reusable, self-contained components with explicit contracts?
+- [ ] **Test-First (NON-NEGOTIABLE)**: Are test scenarios written and approved before implementation begins?
+- [ ] **Type Safety**: Is TypeScript strict mode enabled? Are API contracts defined and validated?
+- [ ] **Observability**: Is structured logging planned for API calls and component errors?
+- [ ] **Simplicity**: Are abstractions justified? Is the simplest viable solution chosen?
+
+**Technology Constraints Check:**
+- [ ] Vue 3 + TypeScript (strict mode) + Vite + Quasar + Pinia + Axios
+- [ ] API contract validation planned for backend integration
+- [ ] Design compliance with Figma specifications verified
+
+**Violations**: Document any principle violations in the Complexity Tracking section below with justification.
 
 ## Project Structure
 

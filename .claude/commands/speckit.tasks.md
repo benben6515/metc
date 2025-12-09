@@ -68,7 +68,7 @@ The tasks.md should be immediately executable - each task must be specific enoug
 
 **CRITICAL**: Tasks MUST be organized by user story to enable independent implementation and testing.
 
-**Tests are OPTIONAL**: Only generate test tasks if explicitly requested in the feature specification or if user requests TDD approach.
+**Tests are MANDATORY for METC**: Per the project constitution, Test-First Development is non-negotiable. All user stories MUST include test tasks written before implementation (Red-Green-Refactor cycle).
 
 ### Checklist Format (REQUIRED)
 
