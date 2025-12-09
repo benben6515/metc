@@ -1,0 +1,50 @@
+{
+  "name": "metc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "format": "prettier --write src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benben6515/metc.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/benben6515/metc/issues"
+  },
+  "homepage": "https://github.com/benben6515/metc#readme",
+  "dependencies": {
+    "@quasar/extras": "^1.17.0",
+    "axios": "^1.13.2",
+    "pinia": "^2.3.1",
+    "quasar": "^2.18.6",
+    "vue": "^3.5.25",
+    "vue-router": "^4.6.3",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@quasar/vite-plugin": "^1.10.0",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "@vue/eslint-config-typescript": "^12.0.0",
+    "@vue/test-utils": "^2.4.6",
+    "@vue/tsconfig": "^0.5.1",
+    "eslint": "^8.57.1",
+    "jsdom": "^23.2.0",
+    "prettier": "^3.7.4",
+    "typescript": "^5.9.3",
+    "vite": "^5.4.21",
+    "vitest": "^1.6.1",
+    "vue-tsc": "^3.1.8"
+  }
+}
