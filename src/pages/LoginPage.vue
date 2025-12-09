@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { QCard, QCardSection, QForm, QInput, QBtn } from 'quasar';
+import { QCard, QCardSection, QForm, QInput, QBtn, useQuasar } from 'quasar';
 import ErrorMessage from '@/components/common/ErrorMessage.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useAccountsStore } from '@/stores/accounts';
@@ -65,6 +65,7 @@ import { useAccountsStore } from '@/stores/accounts';
 const router = useRouter();
 const authStore = useAuthStore();
 const accountsStore = useAccountsStore();
+const $q = useQuasar();
 
 const email = ref('');
 const password = ref('');
@@ -116,6 +117,14 @@ async function handleLogin(): Promise<void> {
 
     console.log('Auth state set, redirecting...');
 
+    // Show success notification
+    $q.notify({
+      type: 'positive',
+      message: `歡迎回來，${user.name}！`,
+      position: 'top-right',
+      timeout: 2000,
+    });
+
     // Redirect to accounts page
     await router.push({ name: 'Accounts' });
   } catch (err) {
@@ -137,12 +146,32 @@ function goToRegister(): void {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem;
 }
 
 .login-container {
   width: 100%;
-  max-width: 500px;
-  padding: 2rem;
+  max-width: 450px;
+}
+
+.login-container :deep(.q-card) {
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.text-h5 {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+@media (max-width: 600px) {
+  .login-page {
+    padding: 0.5rem;
+  }
+
+  .login-container {
+    max-width: 100%;
+  }
 }
 </style>

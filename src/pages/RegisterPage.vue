@@ -89,7 +89,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { QCard, QCardSection, QForm, QInput, QSelect, QBtn, QIcon } from 'quasar';
+import { QCard, QCardSection, QForm, QInput, QSelect, QBtn, QIcon, useQuasar } from 'quasar';
 import ErrorMessage from '@/components/common/ErrorMessage.vue';
 import { useAccountsStore } from '@/stores/accounts';
 import { useAuthStore } from '@/stores/auth';
@@ -98,6 +98,7 @@ import type { RoleLevel } from '@/types/account';
 const router = useRouter();
 const accountsStore = useAccountsStore();
 const authStore = useAuthStore();
+const $q = useQuasar();
 
 const formData = ref({
   name: '',
@@ -120,6 +121,14 @@ async function handleRegister(): Promise<void> {
     // Create the account
     const newAccount = await accountsStore.createAccount(formData.value);
 
+    // Show success notification
+    $q.notify({
+      type: 'positive',
+      message: '註冊成功！',
+      position: 'top-right',
+      timeout: 2000,
+    });
+
     // Auto-login after registration if user is ADMIN
     if (newAccount.roleLevel === 'ADMIN') {
       // Set auth state directly
@@ -141,15 +150,26 @@ async function handleRegister(): Promise<void> {
     }
   } catch (error) {
     // Show user-friendly error message
+    let errorMsg = '註冊失敗';
     if (accountsStore.error) {
       if (accountsStore.error.includes('invalid_type') || accountsStore.error.includes('Required')) {
-        accountsStore.error = '註冊失敗：資料格式錯誤';
+        errorMsg = '註冊失敗：資料格式錯誤';
+        accountsStore.error = errorMsg;
       } else if (accountsStore.error.includes('404')) {
-        accountsStore.error = '註冊失敗：API 端點不存在';
+        errorMsg = '註冊失敗：API 端點不存在';
+        accountsStore.error = errorMsg;
       } else if (accountsStore.error.includes('400')) {
-        accountsStore.error = '註冊失敗：資料驗證失敗';
+        errorMsg = '註冊失敗：資料驗證失敗';
+        accountsStore.error = errorMsg;
       }
     }
+
+    $q.notify({
+      type: 'negative',
+      message: errorMsg,
+      position: 'top-right',
+      timeout: 3000,
+    });
   }
 }
 
@@ -164,12 +184,32 @@ function goToLogin(): void {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem;
 }
 
 .register-container {
   width: 100%;
-  max-width: 500px;
-  padding: 2rem;
+  max-width: 450px;
+}
+
+.register-container :deep(.q-card) {
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.text-h5 {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+@media (max-width: 600px) {
+  .register-page {
+    padding: 0.5rem;
+  }
+
+  .register-container {
+    max-width: 100%;
+  }
 }
 </style>

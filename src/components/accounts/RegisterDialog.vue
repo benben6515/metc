@@ -198,5 +198,25 @@ function handleCancel(): void {
 </script>
 
 <style scoped>
-/* Styles handled by Quasar components */
+:deep(.q-card) {
+  border-radius: 12px;
+}
+
+:deep(.text-h6) {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+:deep(.q-field__label) {
+  font-weight: 500;
+}
+
+:deep(.q-btn) {
+  font-weight: 500;
+  text-transform: none;
+}
+
+:deep(.q-btn--flat) {
+  font-weight: 400;
+}
 </style>

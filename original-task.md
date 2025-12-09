@@ -25,7 +25,7 @@
 
 - Base URL: `https://api-frontend-interview-server.metcfire.com.tw/`
 - API 文件: `https://api-frontend-interview-server.metcfire.com.tw/api-docs`
-- 測試帳號: `[隨便打]`
+- 測試帳號: `[隨便打，但要符合 Email 格式]`
 - 測試密碼: `[隨便打]`
 
 **設計稿:** `https://server-door-49461275.figma.site/`

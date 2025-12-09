@@ -20,6 +20,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useQuasar } from 'quasar';
 import AccountForm from '@/components/accounts/AccountForm.vue';
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue';
 import { useAccountsStore } from '@/stores/accounts';
@@ -28,6 +29,7 @@ import type { AccountUpdateDto } from '@/types/account';
 const router = useRouter();
 const route = useRoute();
 const accountsStore = useAccountsStore();
+const $q = useQuasar();
 
 onMounted(async () => {
   const accountId = route.params.id as string;
@@ -40,9 +42,30 @@ async function handleUpdate(data: AccountUpdateDto): Promise<void> {
   const accountId = route.params.id as string;
   try {
     await accountsStore.updateAccount(accountId, data);
+
+    // Show success notification
+    $q.notify({
+      type: 'positive',
+      message: '帳號更新成功',
+      position: 'top-right',
+      timeout: 2000,
+      actions: [
+        { label: '關閉', color: 'white', handler: () => {} }
+      ]
+    });
+
     await router.push({ name: 'Accounts' });
   } catch (error) {
-    // Error is handled by the store
+    // Show error notification
+    $q.notify({
+      type: 'negative',
+      message: '更新帳號失敗',
+      position: 'top-right',
+      timeout: 3000,
+      actions: [
+        { label: '關閉', color: 'white', handler: () => {} }
+      ]
+    });
   }
 }
 
