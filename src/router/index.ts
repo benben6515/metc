@@ -22,7 +22,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/register',
+    redirect: '/login',
   },
   {
     path: '/accounts',
@@ -45,7 +45,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    redirect: '/register',
+    redirect: '/login',
   },
 ];
 
@@ -68,9 +68,9 @@ router.beforeEach((to, from, next) => {
 
   if (requiresAuth && !authStore.isAuthenticated) {
     logger.warn('Unauthorized access attempt', { path: to.path });
-    next({ name: 'Register', query: { redirect: to.fullPath } });
+    next({ name: 'Login', query: { redirect: to.fullPath } });
   } else if ((to.name === 'Login' || to.name === 'Register') && authStore.isAuthenticated) {
-    // Redirect to home if already authenticated
+    // Redirect to accounts if already authenticated
     next({ name: 'Accounts' });
   } else {
     next();

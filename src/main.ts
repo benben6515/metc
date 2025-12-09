@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import { Quasar } from 'quasar';
+import { Quasar, Notify } from 'quasar';
 import router from './router';
 import App from './App.vue';
 import { useAuthStore } from './stores/auth';
@@ -15,7 +15,9 @@ const pinia = createPinia();
 app.use(pinia);
 app.use(router);
 app.use(Quasar, {
-  plugins: {}
+  plugins: {
+    Notify
+  }
 });
 
 // Initialize auth store after pinia is installed

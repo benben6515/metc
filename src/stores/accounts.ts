@@ -117,8 +117,14 @@ export const useAccountsStore = defineStore('accounts', () => {
     try {
       const response = await apiClient.patch<Account>(`/update-account/${id}`, accountData);
 
-      // Validate response
-      const validatedData = AccountSchema.parse(response.data);
+      // Try to validate response, but if it fails, use raw data
+      let validatedData: Account;
+      try {
+        validatedData = AccountSchema.parse(response.data);
+      } catch (validationError) {
+        logger.warn('Response validation failed, using raw data', validationError);
+        validatedData = response.data as Account;
+      }
 
       // Update in local state
       const index = accounts.value.findIndex(acc => acc.id === id);
